@@ -42,6 +42,13 @@ public class TrackController {
         return new ResponseEntity<>(trackAll, HttpStatus.OK);
     }
 
+    //getting data using getByName using getMapping
+    @GetMapping("trackse/{name}")
+    public ResponseEntity<?> getTrackByName(@PathVariable String name) {
+        Track trackName = trackService.getTrackByName(name);
+        return new ResponseEntity<>(trackName, HttpStatus.OK);
+    }
+
     @DeleteMapping("trackde/{id}")
     public ResponseEntity<?> deleteTrackbyId(@PathVariable int id) {
         Optional<Track> trackDelete = (Optional<Track>) trackService.deleteTrackById(id);
@@ -51,9 +58,9 @@ public class TrackController {
 
 
     @PutMapping("trackco/{id}")
-    public ResponseEntity<?> updateTrack(@PathVariable int id,@RequestBody Track track){
-        Track updatedTrack=trackService.updateTrack(id,track);
+    public ResponseEntity<?> updateTrack(@PathVariable int id, @RequestBody Track track) {
+        Track updatedTrack = trackService.updateTrack(id, track);
         return new ResponseEntity<>(updatedTrack, HttpStatus.OK);
     }
-    }
+}
 

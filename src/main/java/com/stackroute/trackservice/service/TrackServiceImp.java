@@ -39,6 +39,13 @@ public class TrackServiceImp implements TrackService {
     }
 
     @Override
+    public Track getTrackByName(String name) {
+        Track trackName = trackRespository.getTrackByName(name);
+        return trackName;
+
+    }
+
+    @Override
     public Optional<Track> deleteTrackById(int id) {
         Optional<Track> trackDelete = trackRespository.findById(id);
         if (trackDelete.isPresent()) {
@@ -48,7 +55,7 @@ public class TrackServiceImp implements TrackService {
     }
 
     @Override
-    public Track updateTrack(int id,Track track) {
+    public Track updateTrack(int id, Track track) {
         Track update = trackRespository.findById(id).get();
         update.setName(track.getName());
         update.setComment(track.getComment());

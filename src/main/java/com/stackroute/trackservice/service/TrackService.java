@@ -7,9 +7,17 @@ import java.util.Optional;
 
 public interface TrackService {
     public Track saveTrack(Track user);
+
     public Track getTrackById(int id);
-public List<Track> getAllTracks();
+
+    public List<Track> getAllTracks();
+
     public Optional<Track> deleteTrackById(int id);
-    public Track updateTrack(int id,Track track);
+
+    public Track updateTrack(int id, Track track);
+
+    //declaring method name with parameter
+    public Track getTrackByName(String name);
+
 
 }
