@@ -21,62 +21,67 @@ public class TrackServiceImp implements TrackService {
         this.trackRespository = trackRespository;
     }
 
+    //save track method
     @Override
     public Track saveTrack(Track track) throws TrackAlreadyExistException {
-        if(trackRespository.existsById(track.getId()))
-        {
+        if (trackRespository.existsById(track.getId())) {
             System.out.println("Inside service*************");
             throw new TrackAlreadyExistException("user already exists");
         }
         Track savedTrack = trackRespository.save(track);
-        if(savedTrack==null){
+        if (savedTrack == null) {
             throw new TrackAlreadyExistException("user already exists");
         }
         return savedTrack;
     }
 
+    //get track by id
     @Override
     public Optional<Track> getTrackById(int id) throws TrackNotFoundException {
-       if( !trackRespository.findById(id).isPresent()){
+        if (!trackRespository.findById(id).isPresent()) {
 
-            throw  new TrackNotFoundException("id not exists");
+            throw new TrackNotFoundException("id not exists");
         }
         return trackRespository.findById(id);
     }
 
+    //get all tracks
     @Override
     public List<Track> getAllTracks() throws TrackNotFoundException {
         List<Track> trackList = trackRespository.findAll();
-        if(trackList.isEmpty()){
+        if (trackList.isEmpty()) {
             throw new TrackNotFoundException("Tracks Not available");
         }
         return trackList;
     }
+    //get track by name
 
     @Override
     public Track getTrackByName(String name) throws TrackNotFoundException {
 
 
         Track trackName = trackRespository.getTrackByName(name);
-        if(trackName==null){
-            throw  new TrackNotFoundException("name not exists");
+        if (trackName == null) {
+            throw new TrackNotFoundException("name not exists");
         }
         return trackName;
 
     }
 
+    //delete track by id
     @Override
     public Optional<Track> deleteTrackById(int id) throws TrackNotFoundException {
         Optional<Track> trackDelete = trackRespository.findById(id);
         if (!trackDelete.isPresent()) {
-            throw  new TrackNotFoundException("track not found");
+            throw new TrackNotFoundException("track not found");
+        } else {
+            trackRespository.deleteById(id);
         }
-        else{
-        trackRespository.deleteById(id);}
 
         return trackDelete;
     }
 
+    //update track by id
     @Override
     public Track updateTrack(int id, Track track) {
         Track update = trackRespository.findById(id).get();

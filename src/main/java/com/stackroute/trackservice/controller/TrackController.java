@@ -38,6 +38,7 @@ public class TrackController {
         return responseEntity;
     }
 
+    //get Track by id
     @GetMapping("track/{id}")
     public ResponseEntity<?> getTrackById(@PathVariable int id) {
         ResponseEntity responseEntity;
@@ -51,6 +52,7 @@ public class TrackController {
         return responseEntity;
 
     }
+    //get all tasks
 
     @GetMapping("track")
     public ResponseEntity<?> getAllTracks() {
@@ -79,7 +81,7 @@ public class TrackController {
 
     }
 
-
+    //delete track
     @DeleteMapping("trackde/{id}")
     public ResponseEntity<?> deleteTrackbyId(@PathVariable int id) {
         ResponseEntity responseEntity;
@@ -94,7 +96,7 @@ public class TrackController {
         return responseEntity;
     }
 
-
+    //update track
     @PutMapping("trackco/{id}")
     public ResponseEntity<?> updateTrack(@PathVariable int id, @RequestBody Track track) {
         Track updatedTrack = trackService.updateTrack(id, track);
