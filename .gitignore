@@ -3,6 +3,7 @@ target/
 .idea/
 mvnw
 mvnw.cmd
+.mvn/wrapper
 
 
 ### IntelliJ IDEA ###
