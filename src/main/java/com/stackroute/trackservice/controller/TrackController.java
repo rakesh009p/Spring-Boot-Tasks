@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("api/v1/")
 //maps web request
 public class TrackController {
     TrackService trackService;
