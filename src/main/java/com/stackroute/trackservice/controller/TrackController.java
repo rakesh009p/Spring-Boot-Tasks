@@ -20,6 +20,9 @@ import java.util.Optional;
 public class TrackController {
     TrackService trackService;
 
+    public TrackController() {
+    }
+
     @Autowired
     public TrackController( TrackService trackService) {
         this.trackService = trackService;

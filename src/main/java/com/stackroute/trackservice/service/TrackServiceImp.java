@@ -14,8 +14,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@Profile("dev")
+//primary annotation is used to tell controller  to overcome ampiquity
 @Primary
-//@Profile("service")
+
 public class TrackServiceImp implements TrackService {
 
     TrackRespository trackRespository;
