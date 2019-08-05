@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 
-@ConfigurationProperties
+@ConfigurationProperties(prefix = "app")
 @Profile("dev")
 public class DBConfiguration {
     private String driverClassName;
