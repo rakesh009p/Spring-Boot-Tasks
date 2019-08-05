@@ -22,7 +22,7 @@ public interface TrackService {
     public Track updateTrack(int id, Track track);
 
     //declaring method name with parameter
-    public Track getTrackByName(String name) throws TrackNotFoundException;
+    public Track getByName(String name) throws TrackNotFoundException;
 
 
 }

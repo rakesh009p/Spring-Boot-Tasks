@@ -64,10 +64,10 @@ public class TrackServiceImp implements TrackService {
     //get track by name
 
     @Override
-    public Track getTrackByName(String name) throws TrackNotFoundException {
+    public Track getByName(String name) throws TrackNotFoundException {
 
 
-        Track trackName = trackRespository.getTrackByName(name);
+        Track trackName = trackRespository.findByName(name);
         if (trackName == null) {
             throw new TrackNotFoundException("name not exists");
         }

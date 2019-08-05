@@ -69,7 +69,7 @@ public class TrackController {
     public ResponseEntity<?> getTrackByName(@PathVariable String name) throws TrackNotFoundException {
         ResponseEntity responseEntity;
 
-        trackService.getTrackByName(name);
+        trackService.getByName(name);
         responseEntity = new ResponseEntity<String>("retrived by name", HttpStatus.CREATED);
 
         return responseEntity;
