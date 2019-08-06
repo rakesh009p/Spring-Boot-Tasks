@@ -52,14 +52,12 @@ public class TrackControllerTest {
         track = new Track();
 
 
-
-
-        list=new ArrayList<>();
-        track=new Track(1,"rrr","title song");
+        list = new ArrayList<>();
+        track = new Track(1, "rrr", "title song");
         list.add(track);
-        Track track1=new Track(2,"bahubali","intro song");
+        Track track1 = new Track(2, "bahubali", "intro song");
         list.add(track1);
-        Track track2=new Track(3,"dhimmak karab","ismart shankar");
+        Track track2 = new Track(3, "dhimmak karab", "ismart shankar");
         list.add(track2);
 
         list.add(track);
@@ -75,12 +73,12 @@ public class TrackControllerTest {
 
 
     }
+
     @Test
     public void saveTrackFailure() throws Exception {
-        when(trackService.saveTrack((Track)any())).thenThrow(TrackAlreadyExistException.class);
+        when(trackService.saveTrack(any())).thenThrow(TrackAlreadyExistException.class);
         mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/track")
-                .contentType(MediaType.APPLICATION_JSON).
-                        content(asJsonString(track)))
+                .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
                 .andExpect(MockMvcResultMatchers.status().isConflict())
                 .andDo(MockMvcResultHandlers.print());
     }
@@ -94,6 +92,7 @@ public class TrackControllerTest {
                 .andDo(MockMvcResultHandlers.print());
 
     }
+
     @Test
     public void getAllTracksFailure() throws TrackNotFoundException, Exception {
         when(trackService.getAllTracks()).thenThrow(Exception.class);
@@ -107,27 +106,45 @@ public class TrackControllerTest {
     @Test
     public void deleteTrackSuccess() throws Exception, TrackNotFoundException {
         when(trackService.deleteTrackById(track.getId())).thenReturn(null);
-        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/trackde/1",track.getId())
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/trackde/1", track.getId())
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andDo(MockMvcResultHandlers.print());
     }
+
     @Test
-    public void updateTrackSuccess() throws Exception
-    {
-        when(trackService.updateTrack(1,track)).thenReturn(track);
+    public void deleteTracksFailure() throws Exception, TrackNotFoundException {
+        when(trackService.deleteTrackById(1)).thenThrow(TrackNotFoundException.class);
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/trackde/1")
+                .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    public void updateTrackSuccess() throws Exception {
+        when(trackService.updateTrack(1, track)).thenReturn(track);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/trackco/1")
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
     }
+
     @Test
-    public void UpdateTrackFailure() throws  Exception {
-        when(trackService.updateTrack(1,track)).thenThrow(TrackNotFoundException.class);
+    public void UpdateTrackFailure() throws Exception {
+        when(trackService.updateTrack(1, track)).thenThrow(TrackNotFoundException.class);
         mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/trackco/1")
-                .contentType(MediaType.APPLICATION_JSON).
-                        content(asJsonString(track)))
+                .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    public void getTrackById() throws Exception, TrackNotFoundException {
+        when(trackService.getTrackById(1)).thenReturn(null);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/track/1")
+                .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andDo(MockMvcResultHandlers.print());
     }
 
