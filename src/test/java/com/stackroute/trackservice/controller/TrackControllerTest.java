@@ -3,6 +3,7 @@ package com.stackroute.trackservice.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.stackroute.trackservice.domain.Track;
 import com.stackroute.trackservice.exception.GlobalException;
+import com.stackroute.trackservice.exception.TrackAlreadyExistException;
 import com.stackroute.trackservice.exception.TrackNotFoundException;
 import com.stackroute.trackservice.service.TrackService;
 import org.junit.Before;
@@ -50,11 +51,16 @@ public class TrackControllerTest {
         mockMvc = MockMvcBuilders.standaloneSetup(trackController).setControllerAdvice(new GlobalException()).build();
         track = new Track();
 
-        track.setName("rakesh");
-        track.setId(19);
-        track.setComment("this is rakesh");
 
-        list = new ArrayList();
+
+
+        list=new ArrayList<>();
+        track=new Track(1,"rrr","title song");
+        list.add(track);
+        Track track1=new Track(2,"bahubali","intro song");
+        list.add(track1);
+        Track track2=new Track(3,"dhimmak karab","ismart shankar");
+        list.add(track2);
 
         list.add(track);
     }
@@ -69,15 +75,60 @@ public class TrackControllerTest {
 
 
     }
+    @Test
+    public void saveTrackFailure() throws Exception {
+        when(trackService.saveTrack((Track)any())).thenThrow(TrackAlreadyExistException.class);
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/v1/track")
+                .contentType(MediaType.APPLICATION_JSON).
+                        content(asJsonString(track)))
+                .andExpect(MockMvcResultMatchers.status().isConflict())
+                .andDo(MockMvcResultHandlers.print());
+    }
 
     @Test
-    public void getAllUser() throws TrackNotFoundException, Exception {
+    public void getAllTracks() throws TrackNotFoundException, Exception {
         when(trackService.getAllTracks()).thenReturn(list);
         mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/track")
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
 
+    }
+    @Test
+    public void getAllTracksFailure() throws TrackNotFoundException, Exception {
+        when(trackService.getAllTracks()).thenThrow(Exception.class);
+        mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/track")
+                .contentType(MediaType.APPLICATION_JSON).
+                        content(asJsonString(track)))
+                .andExpect(MockMvcResultMatchers.status().isConflict())
+                .andDo(MockMvcResultHandlers.print());
+    }
+
+    @Test
+    public void deleteTrackSuccess() throws Exception, TrackNotFoundException {
+        when(trackService.deleteTrackById(track.getId())).thenReturn(null);
+        mockMvc.perform(MockMvcRequestBuilders.delete("/api/v1/trackde/1",track.getId())
+                .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
+                .andExpect(MockMvcResultMatchers.status().isCreated())
+                .andDo(MockMvcResultHandlers.print());
+    }
+    @Test
+    public void updateTrackSuccess() throws Exception
+    {
+        when(trackService.updateTrack(1,track)).thenReturn(track);
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/trackco/1")
+                .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print());
+    }
+    @Test
+    public void UpdateTrackFailure() throws  Exception {
+        when(trackService.updateTrack(1,track)).thenThrow(TrackNotFoundException.class);
+        mockMvc.perform(MockMvcRequestBuilders.put("/api/v1/trackco/1")
+                .contentType(MediaType.APPLICATION_JSON).
+                        content(asJsonString(track)))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andDo(MockMvcResultHandlers.print());
     }
 
     private static String asJsonString(final Object obj) {

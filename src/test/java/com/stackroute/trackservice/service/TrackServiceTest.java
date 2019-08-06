@@ -113,11 +113,14 @@ public class TrackServiceTest {
     @Test
     public void updateTrackTestSuccess(){
         trackRespository.save(track);
-        when(trackRespository.findById(19)).thenReturn(Optional.ofNullable(track));
-        track.setName("rakhi");
-        Track updatedTrack = new Track(19,"rakhi","i am rakesh");
-        assertEquals(updatedTrack,track);
-    }
+        Track track1 = new Track();
+        track1.setName("rock n roll");
+        track1.setComment("Best Track");
+        when(trackRespository.findById(track.getId())).thenReturn(Optional.of(track));
+        Track updateTrack =  trackServiceImp.updateTrack(19,track1);
+        when(trackRespository.save(updateTrack)).thenReturn(updateTrack);
+        Assert.assertNotEquals(updateTrack,track);
+        verify(trackRespository,times(1)).save(track);
+    }    }
 
 
-}
