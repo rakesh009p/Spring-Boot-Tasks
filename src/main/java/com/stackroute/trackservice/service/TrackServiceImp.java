@@ -32,7 +32,7 @@ public class TrackServiceImp implements TrackService {
     @Override
     public Track saveTrack(Track track) throws TrackAlreadyExistException {
         if (trackRespository.existsById(track.getId())) {
-            System.out.println("Inside service*************");
+
             throw new TrackAlreadyExistException("user already exists");
         }
         Track savedTrack = trackRespository.save(track);
@@ -45,7 +45,7 @@ public class TrackServiceImp implements TrackService {
     //get track by id
     @Override
     public Optional<Track> getTrackById(int id) throws TrackNotFoundException {
-        if (!trackRespository.findById(id).isPresent()) {
+        if (trackRespository.findById(id).isEmpty()) {
 
             throw new TrackNotFoundException("id not exists");
         }
@@ -79,10 +79,11 @@ public class TrackServiceImp implements TrackService {
     @Override
     public Optional<Track> deleteTrackById(int id) throws TrackNotFoundException {
         Optional<Track> trackDelete = trackRespository.findById(id);
-        if (!trackDelete.isPresent()) {
-            throw new TrackNotFoundException("track not found");
-        } else {
+        System.out.println(id);
+        if (trackDelete.isPresent()) {
             trackRespository.deleteById(id);
+        } else {
+            throw new TrackNotFoundException("track not found");
         }
 
         return trackDelete;

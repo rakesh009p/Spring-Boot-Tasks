@@ -18,13 +18,13 @@ import java.util.Optional;
 @RequestMapping("api/v1/")
 //maps web request
 public class TrackController {
-    TrackService trackService;
+    private TrackService trackService;
 
     public TrackController() {
     }
 
     @Autowired
-    public TrackController( TrackService trackService) {
+    public TrackController(TrackService trackService) {
         this.trackService = trackService;
     }
     //save track
