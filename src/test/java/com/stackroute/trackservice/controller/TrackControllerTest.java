@@ -6,6 +6,7 @@ import com.stackroute.trackservice.exception.GlobalException;
 import com.stackroute.trackservice.exception.TrackAlreadyExistException;
 import com.stackroute.trackservice.exception.TrackNotFoundException;
 import com.stackroute.trackservice.service.TrackService;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +28,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
@@ -62,6 +63,12 @@ public class TrackControllerTest {
 
         list.add(track);
     }
+    @After
+    public void tearDown(){
+        track=null;
+        List<Track> list = null;
+
+    }
 
     @Test
     public void saveTrack() throws Exception {
@@ -70,6 +77,7 @@ public class TrackControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andDo(MockMvcResultHandlers.print());
+        verify(trackService, times(1)).saveTrack(track);
 
 
     }
@@ -81,6 +89,7 @@ public class TrackControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
                 .andExpect(MockMvcResultMatchers.status().isConflict())
                 .andDo(MockMvcResultHandlers.print());
+        verify(trackService, times(1)).saveTrack(track);
     }
 
     @Test
@@ -90,6 +99,7 @@ public class TrackControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
+        verify(trackService, times(1)).saveTrack(track);
 
     }
 
@@ -101,6 +111,7 @@ public class TrackControllerTest {
                         content(asJsonString(track)))
                 .andExpect(MockMvcResultMatchers.status().isConflict())
                 .andDo(MockMvcResultHandlers.print());
+        verify(trackService, times(1)).saveTrack(track);
     }
 
     @Test
@@ -110,6 +121,7 @@ public class TrackControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andDo(MockMvcResultHandlers.print());
+        verify(trackService, times(2)).deleteTrackById(19);
     }
 
     @Test
@@ -119,6 +131,7 @@ public class TrackControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andDo(MockMvcResultHandlers.print());
+        verify(trackService, times(2)).deleteTrackById(19);
     }
 
     @Test
@@ -128,6 +141,7 @@ public class TrackControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print());
+        verify(trackService, times(1)).updateTrack(19,track);
     }
 
     @Test
@@ -137,6 +151,7 @@ public class TrackControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
                 .andDo(MockMvcResultHandlers.print());
+        verify(trackService, times(1)).updateTrack(19,track);
     }
 
     @Test
@@ -146,6 +161,7 @@ public class TrackControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).content(asJsonString(track)))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andDo(MockMvcResultHandlers.print());
+        verify(trackService, times(2)).getTrackById(19);
     }
 
     private static String asJsonString(final Object obj) {

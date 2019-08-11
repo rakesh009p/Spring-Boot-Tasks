@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpServerErrorException;
 
 @ControllerAdvice
 public class GlobalException {
@@ -16,5 +17,9 @@ public class GlobalException {
     @ExceptionHandler(TrackAlreadyExistException.class)
     public ResponseEntity<?> idAlreadyExists(TrackAlreadyExistException ex) {
         return new ResponseEntity<String>("Track Already exists", HttpStatus.NOT_ACCEPTABLE);
+    }
+    @ExceptionHandler( HttpServerErrorException.InternalServerError.class)
+    public ResponseEntity<?>internalServrError(HttpServerErrorException.InternalServerError error){
+        return  new ResponseEntity<String>("internal server occured",HttpStatus.CREATED);
     }
 }

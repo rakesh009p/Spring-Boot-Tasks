@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,25 +25,26 @@ public class TrackController {
     }
 
     @Autowired
-    public TrackController(TrackService trackService) {
+    public TrackController( TrackService trackService) {
+
         this.trackService = trackService;
     }
     //save track
     //returns user object
 
     @PostMapping("track")
-    public ResponseEntity<?> saveTrack(@RequestBody Track track) throws TrackAlreadyExistException {
+    public ResponseEntity<?> saveTrack(@RequestBody Track track) throws TrackAlreadyExistException , HttpServerErrorException.InternalServerError {
         ResponseEntity responseEntity;
 
         trackService.saveTrack(track);
-        responseEntity = new ResponseEntity<String>("sucessfully ceated", HttpStatus.CREATED);
+        responseEntity = new ResponseEntity<String>("sucessfully ceated", HttpStatus.RESET_CONTENT);
 
         return responseEntity;
     }
 
     //get Track by id
     @GetMapping("track/{id}")
-    public ResponseEntity<?> getTrackById(@PathVariable int id) throws TrackNotFoundException {
+    public ResponseEntity<?> getTrackById(@PathVariable int id) throws TrackNotFoundException, HttpServerErrorException.InternalServerError {
         ResponseEntity responseEntity;
 
         trackService.getTrackById(id);
@@ -53,8 +55,8 @@ public class TrackController {
     }
     //get all tasks
 
-    @GetMapping("track")
-    public ResponseEntity<?> getAllTracks() throws TrackNotFoundException {
+    @GetMapping("tracks")
+    public ResponseEntity<?> getAllTracks() throws TrackNotFoundException, HttpServerErrorException.InternalServerError {
         ResponseEntity responseEntity;
 
         trackService.getAllTracks();
@@ -65,12 +67,12 @@ public class TrackController {
 
     //getting data using getByName using getMapping
     //stores the name and return the selected name list
-    @GetMapping("trackse/{name}")
-    public ResponseEntity<?> getTrackByName(@PathVariable String name) throws TrackNotFoundException {
+    @GetMapping("track/{name}")
+    public ResponseEntity<?> getTrackByName(@PathVariable String name) throws TrackNotFoundException, HttpServerErrorException.InternalServerError {
         ResponseEntity responseEntity;
 
         trackService.getByName(name);
-        responseEntity = new ResponseEntity<String>("retrived by name", HttpStatus.CREATED);
+        responseEntity = new ResponseEntity<String>("retrived by name", HttpStatus.PARTIAL_CONTENT);
 
         return responseEntity;
 
@@ -78,21 +80,21 @@ public class TrackController {
 
     //delete track
     //returns responseEntity with object or message
-    @DeleteMapping("trackde/{id}")
-    public ResponseEntity<?> deleteTrackbyId(@PathVariable int id) throws TrackNotFoundException {
+    @DeleteMapping("track/{id}")
+    public ResponseEntity<?> deleteTrackbyId(@PathVariable int id) throws TrackNotFoundException, HttpServerErrorException.InternalServerError {
         ResponseEntity responseEntity;
 
         trackService.deleteTrackById(id);
-        responseEntity = new ResponseEntity<String>("deleted by id", HttpStatus.CREATED);
+        responseEntity = new ResponseEntity<String>("deleted by id", HttpStatus.MULTI_STATUS);
 
         return responseEntity;
     }
 
     //update track
-    @PutMapping("trackco/{id}")
-    public ResponseEntity<?> updateTrack(@PathVariable int id, @RequestBody Track track) {
+    @PutMapping("trackupdate/{id}")
+    public ResponseEntity<?> updateTrack(@PathVariable int id, @RequestBody Track track) throws HttpServerErrorException.InternalServerError {
         Track updatedTrack = trackService.updateTrack(id, track);
-        return new ResponseEntity<>(updatedTrack, HttpStatus.OK);
+        return new ResponseEntity<>(updatedTrack, HttpStatus.ACCEPTED);
     }
 }
 

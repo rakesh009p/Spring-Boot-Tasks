@@ -21,8 +21,8 @@ public class TrackRespositoryTest {
 
 
     @Autowired
-    TrackRespository trackRespository;
-    Track track;
+    private TrackRespository trackRespository;
+    private Track track;
 
     @Before
     public void setUp() {
@@ -37,11 +37,12 @@ public class TrackRespositoryTest {
     public void tearDown() {
 
         trackRespository.deleteAll();
+        track=null;
     }
 
 
     @Test
-    public void findByName() {
+    public void givenTrackInputShouldReturnTrackByName() {
         trackRespository.save(track);
         Track track1 = trackRespository.findByName(track.getName());
         Assert.assertEquals("Rakesh",track1.getName());
@@ -50,27 +51,27 @@ public class TrackRespositoryTest {
 
     }
     @Test
-    public void getTrackById(){
+    public void givenTrackShouldReturnTrackById(){
         trackRespository.save(track);
         Track track1= trackRespository.findById(track.getId()).get();
         Assert.assertEquals(262,track1.getId());
 
     }
     @Test
-    public void getAllTracks(){
+    public void givenTrackshouldReturnAllTracks(){
         trackRespository.save(track);
         List<Track> list = trackRespository.findAll();
         Assert.assertEquals("Rakesh",list.get(0).getName());
     }
     @Test
-    public void deleteById(){
+    public void givenTrackShouldDeleteTrackById(){
         trackRespository.save(track);
         trackRespository.deleteById(track.getId());
         assertEquals(true, trackRespository.existsById(track.getId()));
 
     }
     @Test
-    public void testToUpdateTrackFoundById() {
+    public void gievnTrackShouldUpdateTrackById() {
         Track t1 = new Track(1, "bahubali", "title track");
         Track t2 = new Track(2, "rrr", "intro song");
         trackRespository.save(t1);
