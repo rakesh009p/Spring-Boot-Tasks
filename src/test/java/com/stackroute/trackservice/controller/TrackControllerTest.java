@@ -66,7 +66,7 @@ public class TrackControllerTest {
     @After
     public void tearDown(){
         track=null;
-        List<Track> list = null;
+        list=null;
 
     }
 
